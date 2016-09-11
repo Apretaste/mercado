@@ -1,0 +1,15 @@
+<service>
+	<serviceName>mercado</serviceName>
+	<serviceAliases>
+		<alias>supermercado</alias>
+	</serviceAliases>
+	<serviceDescription><![CDATA[Comprar art&iacute;culos con tu cr&eacute;dito]]></serviceDescription>
+	<creatorEmail>kumahavana@gmail.com</creatorEmail>
+	<serviceCategory>negocios</serviceCategory>
+	<serviceUsage>
+		<![CDATA[
+			Este servicio le permitirá ...
+				
+		]]>
+	</serviceUsage>
+</service>
