@@ -37,15 +37,16 @@ class mercado extends Service
 				$cat = $this->translate($product->category);
 				
 				$product->image = false;
-				$file = "$wwwroot/public/products/{$product->code}";
-								
+				$c = $product->code;
+				$file = "$wwwroot/public/products/$c.jpg";
+				$tempFile = "$wwwroot/temp/$c.jpg";
+				
 				if(file_exists($file))
 				{
-					copy("$wwwroot/public/products/{$product->code}", "$wwwroot/temp/{$product->code}.jpg");
-					$file = "$wwwroot/temp/{$product->code}.jpg";
-					$this->utils->optimizeImage($file,100,"",85,'jpg');
+					copy($file, $tempFile);
+					$this->utils->optimizeImage($tempFile, 100);
 					$product->image = true;
-					$images[] = $file;
+					$images[] = $tempFile;
 				} 
 				
 				$newproducts[$cat][] = $product;				

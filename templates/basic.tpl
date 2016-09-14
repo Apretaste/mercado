@@ -6,7 +6,7 @@
 			<td width="30%" valign="top" align="center">
 			
 			{if $item->image == true}
-				{img src="{$wwwroot}/public/products/{$item->code}" alt="Imagen del producto" width="100"}<br/>
+				{img src="{$wwwroot}/public/products/{$item->code}.jpg" alt="Imagen del producto" width="100"}<br/>
 			{/if}
 			<b>{$item->name}</b><br/>
 			${$item->credits|string_format:"%.2f"}<br/>
