@@ -3,7 +3,7 @@
 	<tr>
 		<td valign="top" width="300">
 			{if $product->image == true} 
-				{img src="{$wwwroot}/public/products/{$product->code}" alt="Imagen del producto" width="300"}<br /> 
+				{img src="{$wwwroot}/public/products/{$product->code}.jpg" alt="Imagen del producto" width="300"}<br /> 
 			{/if}
 		</td>
 		<td>&nbsp;&nbsp;</td>
