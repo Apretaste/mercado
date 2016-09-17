@@ -99,13 +99,13 @@ class mercado extends Service
 				'future_credit' => $current_user->credit - $product->credits
 			);
 			
-			$imgpath = "$wwwroot/public/products/{$product->code}";
+			$imgpath = "$wwwroot/public/products/{$product->code}.jpg";
 			$product->image = false;
 			
 			if (file_exists($imgpath))
 			{
 				$product->image = true;
-				copy("$wwwroot/public/products/{$product->code}", "$wwwroot/temp/{$product->code}.jpg");
+				copy("$wwwroot/public/products/{$product->code}.jpg", "$wwwroot/temp/{$product->code}.jpg");
 				$imgpath = "$wwwroot/temp/{$product->code}.jpg";
 				$this->utils->optimizeImage($imgpath, 300, "", 85, 'jpg');
 			}
