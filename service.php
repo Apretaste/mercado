@@ -35,7 +35,7 @@ class mercado extends Service
 			foreach($products as $product)
 			{
 				$cat = $this->translate($product->category);
-				
+				$product->cat = $cat;
 				$product->image = false;
 				$c = $product->code;
 				$file = "$wwwroot/public/products/$c.jpg";
@@ -49,11 +49,10 @@ class mercado extends Service
 					$images[] = $tempFile;
 				} 
 				
-				$newproducts[$cat][] = $product;				
+				$newproducts[] = $product;				
 			}
 			
 			$products = $newproducts;
-			
 			$response = new Response();
 			$response->setResponseSubject("Articulos a la venta");
 			

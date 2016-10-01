@@ -1,8 +1,7 @@
-{foreach name=products from=$products item=$ps key=$cat}
-	<h1>{$cat}</h1>
-	<table width="100%">
-	<tr>
-	{foreach from=$ps item=$item}
+<h1>Productos en venta</h1>
+<table width="100%">
+<tr>
+{foreach name=products from=$products item=$item}
 			<td width="30%" valign="top" align="center">
 			
 			{if $item->image == true}
@@ -12,9 +11,9 @@
 			${$item->credits|string_format:"%.2f"}<br/>
 			{button href="MERCADO VER {$item->code}" caption="Detalles" size="small" color="blue"}
 			</td>
+
 		{if $smarty.foreach.products.iteration % 3 == 0}
 		</tr><tr>
 		{/if}
-	{/foreach}
-	</table>
 {/foreach}
+</table>
