@@ -3,13 +3,18 @@
 	<serviceAliases>
 		<alias>supermercado</alias>
 	</serviceAliases>
-	<serviceDescription><![CDATA[Comprar art&iacute;culos con tu cr&eacute;dito]]></serviceDescription>
+	<serviceDescription><![CDATA[Comprar art&iacute;culos con su cr&eacute;dito]]></serviceDescription>
 	<creatorEmail>kumahavana@gmail.com</creatorEmail>
 	<serviceCategory>negocios</serviceCategory>
 	<serviceUsage>
 		<![CDATA[
-			Este servicio le permitirá ...
-				
+			Escriba un nuevo email a {APRETASTE_EMAIL} y en el asunto ponga la palabra mercado
+
+			Por ejemplo:
+			Para: {APRETASTE_EMAIL}
+			Asunto: mercado
+
+			Recibir&aacute; un email con los articulos a la venta.
 		]]>
 	</serviceUsage>
 </service>
