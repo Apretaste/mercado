@@ -8,7 +8,7 @@
 				{img src="{$wwwroot}/public/products/{$item->code}.jpg" alt="Imagen del producto" width="100"}<br/>
 			{/if}
 			<b>{$item->name}</b><br/>
-			${$item->credits|string_format:"%.2f"}<br/>
+			&sect;{$item->credits|string_format:"%.2f"}<br/>
 			{button href="MERCADO VER {$item->code}" caption="Detalles" size="small" color="blue"}
 			</td>
 
