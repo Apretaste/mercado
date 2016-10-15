@@ -1,3 +1,4 @@
+<p align="right">&gt;&gt;{link href="WEB credito.apretaste.com" caption="C&oacute;mo obtener cr&eacute;dito"}</p>
 <h1>Productos en venta</h1>
 <table width="100%">
 <tr>

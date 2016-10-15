@@ -1,3 +1,4 @@
+<p align="right">&gt;&gt;{link href="WEB credito.apretaste.com" caption="C&oacute;mo obtener cr&eacute;dito"}</p>
 <h1>{$product->name}</h1>
 <center>
 {if $product->image == true} 
