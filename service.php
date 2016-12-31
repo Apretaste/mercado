@@ -55,7 +55,7 @@ class mercado extends Service
 			
 			$products = $newproducts;
 			$response = new Response();
-			$response->setResponseSubject("Articulos a la venta");
+			$response->setResponseSubject("Productos en el mercado");
 
 			$response->createFromTemplate('basic.tpl', array(
                 "products" => $products,
