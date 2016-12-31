@@ -20,8 +20,6 @@
                 {separator}
 				{$item->name}
             {/if}
-
-
 		</td>
 	</tr>
 	<tr>
@@ -42,6 +40,7 @@
 		</td>
 	</tr>
 </table>
+{space5}
 {/foreach}
 {space30}
 <ul>
