@@ -1,31 +1,43 @@
+<p align="right">&gt;&gt;&nbsp;{link href="WEB credito.apretaste.com" caption="C&oacute;mo obtener cr&eacute;dito"}</p>
 <h1>{$product->name}</h1>
 <center>
 {if $product->image == true} 
-	{img src="{$wwwroot}/public/products/{$product->code}.jpg" alt="Imagen del producto" width="300"}
+	{img src="{$wwwroot}/public/products/{$product->code}.jpg" alt="Imagen del producto" width="100%"}
 {/if}
-{space5}
-<p align="center"><i>{$product->description}</i></p>
-{space5}
-Precio:<br/> 
-<big><strong>${$product->credits|string_format:"%.2f"}</strong></big><br />
-{space5}
-Costo de env&iacute;o incluido: <br/>
-<strong>${$product->shipping_price|string_format:"%.2f"}</strong>
-{space5}
-Categor&iacute;a:<br/>
-<strong>{$product->category}</strong>
-{space5}
 </center>
-{if $future_credit >= 0}
-	<p align="justify">
-	Tu cr&eacute;dito actual es <b>${$current_user->credit|string_format:"%.2f"}</b>
-	y tu cr&eacute;dito despu&eacute;s de comprar ser&aacute;<b> ${$future_credit|string_format:"%.2f"}</b>. 
-	Si te interesa comprar este art&iacute;culo haz clic en el siguiente bot&oacute;n con lo cual no se te 
-	disminuye el cr&eacute;dito ahora, sino que <b>se te pedir&aacute; confirmaci&oacute;n despu&eacute;s.</b>
-</p>
-<center>{button caption="Comprar" href="CREDITO COMPRAR {$product->code}"} {button caption="Ver otros" href="MERCADO" color="blue"}</center>
-{else}
-<p align="justify">
-	Tu cr&eacute;dito actual es <b>${$current_user->credit|string_format:"%.2f"}</b> y no es suficiente para comprar este art&iacute;culo.</p>
-	<center>{button caption="Ver otros" href="MERCADO"}</center>
-{/if}
+{space5}
+<p>{$product->description}</p>
+{space5}
+<center>
+	<big><b>&sect;{$product->credits|string_format:"%.2f"}</b></big>
+	<p>Incluye costos de env&iacute;o hasta su casa. Una vez que pague le mandaremos
+		un email pidiendo sus datos. Actualmente tiene &sect;{$current_user->credit|string_format:"%.2f"}</p>
+</center>
+<center>
+	{button caption="Comprar" href="CREDITO COMPRAR {$product->code}"}
+	{space10}
+	{button caption="Ver otros" href="MERCADO" color="grey"}
+</center>
+{space30}
+
+<ul>
+	<li>
+		<small>
+			Una vez que compre, le mandaremos un email para confirmar antes de rebajar
+			su cr&eacute;dito.
+		</small>
+	</li>
+	<li>
+		<small>
+			Los env&iacute;os duran de 15 a 30 d&iacute;as y por ahora solo podemos
+			enviar a La Habana (podemos enviar a casa de su familia o amigos).
+			Pronto agregaremos m&aacute;s provincias.
+		</small>
+	</li>
+	<li>
+		<small>Si no tiene suficiente cr&eacute;dito, existen
+            {link href="WEB credito.apretaste.com" caption="v&iacute;as de obtener m&aacute;s cr&eacute;ditos"}.
+			Cont&aacute;ctenos para comprar cr&eacute;ditos usando PayPal o una Tarjeta de Cr&eacute;dito.
+		</small>
+	</li>
+</ul>

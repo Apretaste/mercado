@@ -22,7 +22,8 @@ class mercado extends Service
 		$connection = new Connection();
 		$sql = "SELECT * FROM _tienda_products WHERE active = '1' ORDER BY category,name;";
 		$products = $connection->deepQuery($sql);
-		
+        $current_user = $this->utils->getPerson($request->email);
+
 		if (is_array($products))
 		{
 			$newproducts = array();
@@ -54,14 +55,13 @@ class mercado extends Service
 			
 			$products = $newproducts;
 			$response = new Response();
-			$response->setResponseSubject("Articulos a la venta");
-			
-			$content = array(
-				"products" => $products,
-				"wwwroot" => $wwwroot
-			);
-			
-			$response->createFromTemplate('basic.tpl', $content, $images);
+			$response->setResponseSubject("Productos en el mercado");
+
+			$response->createFromTemplate('basic.tpl', array(
+                "products" => $products,
+                "wwwroot" => $wwwroot,
+                "current_user" => $current_user
+            ), $images);
 			
 			return $response;
 		}	
