@@ -31,18 +31,17 @@
 	</tr>
 	<tr>
 		<td>
-			<small>
-				{button size="small" href="MERCADO VER {$item->code}" caption="Detalles" color="grey"}
-				{separator}
-				{button size="small" caption="Comprar" href="CREDITO COMPRAR {$item->code}" color="green"}
-
-			</small>
+			{button size="small" href="MERCADO VER {$item->code}" caption="Detalles" color="grey"}
+			{button size="small" caption="Comprar" href="CREDITO COMPRAR {$item->code}" color="green"}
 		</td>
 	</tr>
+	<tr><td colspan=3><small>&nbsp;</small></td></tr>
 </table>
 {space5}
 {/foreach}
+
 {space30}
+
 <ul>
 	<li>
 		<small>
