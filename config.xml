@@ -3,7 +3,7 @@
 	<serviceAliases>
 		<alias>supermercado</alias>
 	</serviceAliases>
-	<serviceDescription><![CDATA[Comprar art&iacute;culos con su cr&eacute;dito]]></serviceDescription>
+	<serviceDescription>Permite comprar articulos con su credito</serviceDescription>
 	<creatorEmail>kumahavana@gmail.com</creatorEmail>
 	<serviceCategory>negocios</serviceCategory>
 	<serviceUsage>
