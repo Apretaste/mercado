@@ -1,19 +1,11 @@
 <?php
 
-/**
- * Apretaste
- * 
- * MERCADO 
- * 
- * @author kumahacker <kumahavana@gmail.com>
- *
- */
 class mercado extends Service
 {
 	/**
 	 * Function executed when the service is called
 	 *
-	 * @param Request $request			
+	 * @param Request $request
 	 * @return Response
 	 *
 	 */
@@ -21,18 +13,18 @@ class mercado extends Service
 	{
 		$connection = new Connection();
 		$sql = "SELECT * FROM _tienda_products WHERE active = '1' ORDER BY category,name;";
-		$products = $connection->deepQuery($sql);
-        $current_user = $this->utils->getPerson($request->email);
+		$products = $connection->query($sql);
+		$current_user = $this->utils->getPerson($request->email);
 
 		if (is_array($products))
 		{
 			$newproducts = array();
-			
+
 			$di = \Phalcon\DI\FactoryDefault::getDefault();
 			$wwwroot = $di->get('path')['root'];
-			
+
 			$images = array();
-			
+
 			foreach($products as $product)
 			{
 				$cat = $this->translate($product->category);
@@ -41,35 +33,34 @@ class mercado extends Service
 				$c = $product->code;
 				$file = "$wwwroot/public/products/$c.jpg";
 				$tempFile = "$wwwroot/temp/$c.jpg";
-				
+
 				if(file_exists($file))
 				{
 					copy($file, $tempFile);
 					$this->utils->optimizeImage($tempFile, 100);
 					$product->image = true;
 					$images[] = $tempFile;
-				} 
-				
-				$newproducts[] = $product;				
+				}
+
+				$newproducts[] = $product;
 			}
-			
+
 			$products = $newproducts;
 			$response = new Response();
+			$response->setCache("day");
 			$response->setResponseSubject("Productos en el mercado");
-
 			$response->createFromTemplate('basic.tpl', array(
-                "products" => $products,
-                "wwwroot" => $wwwroot,
-                "current_user" => $current_user
-            ), $images);
-			
+				"products" => $products,
+				"wwwroot" => $wwwroot,
+				"current_user" => $current_user
+			), $images);
 			return $response;
-		}	
+		}
 	}
-	
+
 	/**
 	 * Subservice VER
-	 * 
+	 *
 	 * @author kuma
 	 * @param Request $request
 	 */
@@ -77,17 +68,16 @@ class mercado extends Service
 	{
 		$di = \Phalcon\DI\FactoryDefault::getDefault();
 		$wwwroot = $di->get('path')['root'];
-			
+
 		$code = trim($request->query);
 		$code = str_replace("'", "", $code);
-		
+
 		$connection = new Connection();
-		$product = $connection->deepQuery("SELECT * FROM _tienda_products WHERE code = '$code' AND active = '1';");
-		
+		$product = $connection->query("SELECT * FROM _tienda_products WHERE code = '$code' AND active = '1';");
+
 		$current_user = $this->utils->getPerson($request->email);
-		
+
 		$response = new Response();
-		
 		if (is_array($product))
 		{
 			$product = $product[0];
@@ -97,10 +87,10 @@ class mercado extends Service
 				'current_user' => $current_user,
 				'future_credit' => $current_user->credit - $product->credits
 			);
-			
+
 			$imgpath = "$wwwroot/public/products/{$product->code}.jpg";
 			$product->image = false;
-			
+
 			if (file_exists($imgpath))
 			{
 				$product->image = true;
@@ -108,21 +98,22 @@ class mercado extends Service
 				$imgpath = "$wwwroot/temp/{$product->code}.jpg";
 				$this->utils->optimizeImage($imgpath, 300, "", 85, 'jpg');
 			}
-			
-			$product->category = $this->translate($product->category); 
+
+			$product->category = $this->translate($product->category);
+			$response->setCache("day");
 			$response->setResponseSubject("Mercado: {$product->name}");
 			$response->createFromTemplate('product.tpl', $content, array($imgpath));
 			return $response;
 		}
-		
+
 		$response->setResponseSubject("Articulo a la venta no encontrado");
 		$response->createFromText("El c&oacute;digo recibido <b>{$code}</b> no corresponde con ning&uacute;n art&iacute;culo a la venta. Por favor verif&iacute;calo y si el problema persiste consulta con el soporte t&eacute;cnico.");
 		return $response;
 	}
-	
+
 	/**
 	 * Translation
-	 * 
+	 *
 	 * @author kuma
 	 * @param string $text
 	 * @return string
@@ -137,16 +128,16 @@ class mercado extends Service
 			'clothe' => 'Ropa',
 			'service' => 'Servicios'
 		);
-		
+
 		if (isset($translation[$text]))
 			return $translation[$text];
-		
+
 		return $text;
 	}
-	
+
 	/**
 	 * Function executed when a payment is finalized
-	 * 
+	 *
 	 * @author kuma
 	 **/
 	public function payment(Payment $payment)
@@ -157,14 +148,14 @@ class mercado extends Service
 				FROM transfer INNER JOIN inventory on transfer.inventory_code = inventory.code
 				WHERE inventory.service = 'MERCADO' AND transfer.transfered = '1'
 				AND NOT EXISTS (SELECT * FROM _tienda_orders WHERE _tienda_orders.id = transfer.id);";
-		
+
 		$connection = new Connection();
-		$connection->deepQuery($sql);
-		
+		$connection->query($sql);
+
 		// Send email to user
 		$subject = "Se necesitan datos para enviar el articulo comprado a su destino";
 		$content = array('payment' => $payment);
-		
+
 		$response = new Response();
 		$response->setResponseSubject($subject);
 		$response->internal = true;
