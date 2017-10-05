@@ -1,28 +1,26 @@
 <?php
 
-class mercado extends Service
+class Tienda extends Service
 {
 	/**
 	 * Function executed when the service is called
 	 *
 	 * @param Request $request
 	 * @return Response
-	 *
 	 */
 	public function _main (Request $request)
 	{
+		// get products
 		$connection = new Connection();
-		$sql = "SELECT * FROM _tienda_products WHERE active = '1' ORDER BY category,name;";
-		$products = $connection->query($sql);
+		$products = $connection->query("SELECT * FROM _tienda_products WHERE active = '1' ORDER BY category,name;");
 		$current_user = $this->utils->getPerson($request->email);
 
 		if (is_array($products))
 		{
-			$newproducts = array();
-
 			$di = \Phalcon\DI\FactoryDefault::getDefault();
 			$wwwroot = $di->get('path')['root'];
 
+			$newproducts = array();
 			$images = array();
 
 			foreach($products as $product)
@@ -45,15 +43,16 @@ class mercado extends Service
 				$newproducts[] = $product;
 			}
 
-			$products = $newproducts;
-			$response = new Response();
-			$response->setCache("day");
-			$response->setResponseSubject("Productos en el mercado");
-			$response->createFromTemplate('basic.tpl', array(
-				"products" => $products,
+			$content = array(
+				"products" => $newproducts,
 				"wwwroot" => $wwwroot,
 				"current_user" => $current_user
-			), $images);
+			);
+
+			$response = new Response();
+			$response->setCache("week");
+			$response->setResponseSubject("Productos en la tienda");
+			$response->createFromTemplate('basic.tpl', $content, $images);
 			return $response;
 		}
 	}
@@ -66,6 +65,9 @@ class mercado extends Service
 	 */
 	public function _ver(Request $request)
 	{
+		// do not accept empty codes
+		if(empty($request->query)) return new Response();
+
 		$di = \Phalcon\DI\FactoryDefault::getDefault();
 		$wwwroot = $di->get('path')['root'];
 
@@ -78,6 +80,7 @@ class mercado extends Service
 		$current_user = $this->utils->getPerson($request->email);
 
 		$response = new Response();
+		$response->setCache();
 		if (is_array($product))
 		{
 			$product = $product[0];
@@ -100,14 +103,13 @@ class mercado extends Service
 			}
 
 			$product->category = $this->translate($product->category);
-			$response->setCache("day");
-			$response->setResponseSubject("Mercado: {$product->name}");
+			$response->setResponseSubject("Tienda: {$product->name}");
 			$response->createFromTemplate('product.tpl', $content, array($imgpath));
 			return $response;
 		}
 
-		$response->setResponseSubject("Articulo a la venta no encontrado");
-		$response->createFromText("El c&oacute;digo recibido <b>{$code}</b> no corresponde con ning&uacute;n art&iacute;culo a la venta. Por favor verif&iacute;calo y si el problema persiste consulta con el soporte t&eacute;cnico.");
+		$response->setResponseSubject("Articulo no encontrado");
+		$response->createFromText("El codigo recibido <b>{$code}</b> no corresponde con ningun articulo a la venta. Por favor verificalo y si el problema persiste consulta con el soporte tecnico.");
 		return $response;
 	}
 
@@ -129,9 +131,7 @@ class mercado extends Service
 			'service' => 'Servicios'
 		);
 
-		if (isset($translation[$text]))
-			return $translation[$text];
-
+		if (isset($translation[$text])) return $translation[$text];
 		return $text;
 	}
 
@@ -142,29 +142,28 @@ class mercado extends Service
 	 **/
 	public function payment(Payment $payment)
 	{
-		// Insert order
-		$sql = "INSERT INTO _tienda_orders (id, product, email, inserted_date)
+		// Insert the order
+		$connection = new Connection();
+		$connection->query("INSERT INTO _tienda_orders (id, product, email, inserted_date)
 				SELECT id, inventory_code, sender, transfer_time
 				FROM transfer INNER JOIN inventory on transfer.inventory_code = inventory.code
-				WHERE inventory.service = 'MERCADO' AND transfer.transfered = '1'
-				AND NOT EXISTS (SELECT * FROM _tienda_orders WHERE _tienda_orders.id = transfer.id);";
-
-		$connection = new Connection();
-		$connection->query($sql);
+				WHERE inventory.service = 'TIENDA' AND transfer.transfered = '1'
+				AND NOT EXISTS (SELECT * FROM _tienda_orders WHERE _tienda_orders.id = transfer.id);");
 
 		// Send email to user
-		$subject = "Se necesitan datos para enviar el articulo comprado a su destino";
-		$content = array('payment' => $payment);
-
 		$response = new Response();
 		$response->setResponseSubject($subject);
 		$response->internal = true;
-		$render = new Render();
-		$response->createFromTemplate('request_destination.tpl', $content);
+		$response->createFromTemplate('request_destination.tpl', array('payment' => $payment));
+
 		$service = new Service();
-		$service->serviceName = 'mercado';
+		$service->serviceName = 'tienda';
+
+		$render = new Render();
 		$html = $render->renderHTML($service, $response);
+
 		$email = new Email();
+		$subject = "Se necesitan datos para enviar el articulo comprado a su destino";
 		$email->sendEmail($payment->buyer, $subject, $html);
 	}
 }

@@ -1,11 +1,9 @@
-<h1>Productos en el mercado</h1>
-<p align="justify"><b>Su cr&eacute;dito es §{$current_user->credit|string_format:"%.2f"}.</b> A continuaci&oacute;n una lista de los
-	productos que puede comprar con su cr&eacute;dito. El precio incluye el env&iacute;o hasta su casa.
-	Si necesita, vea {link href="WEB credito.apretaste.com" caption="formas de conseguir m&aacute;s credito"}.
-</p>
+<h1>Productos en la tienda</h1>
+
+<p align="justify"><b>Su cr&eacute;dito es §{$current_user->credit|string_format:"%.2f"}.</b> A continuaci&oacute;n una lista de los productos que puede comprar con su cr&eacute;dito. El precio incluye el env&iacute;o hasta su casa. Si necesita, vea {link href="WEB credito.apretaste.com" caption="formas de conseguir m&aacute;s credito"}.</p>
 
 {foreach from=$products item=item name=products}
-<table width="100%">
+<table width="100%" bgcolor="{cycle values="#f2f2f2,white"}">
 	<tr>
 		<td rowspan="3" align="left" width="110" valign="middle">
 			{if $item->image == true}
@@ -31,36 +29,17 @@
 	</tr>
 	<tr>
 		<td>
-			{button size="small" href="MERCADO VER {$item->code}" caption="Detalles" color="grey"}
+			{button size="small" href="TIENDA VER {$item->code}" caption="Detalles" color="grey"}
 			{button size="small" caption="Comprar" href="CREDITO COMPRAR {$item->code}" color="green"}
 		</td>
 	</tr>
-	<tr><td colspan=3><small>&nbsp;</small></td></tr>
 </table>
 {space5}
 {/foreach}
 
-{space30}
-
+<small>
 <ul>
-	<li>
-		<small>
-			Una vez que compre, le llegar&aacute; un email preguntando su tel&eacute;fono
-			y direcci&oacute;n para mandarle el producto a su casa.
-		</small>
-	</li>
-	<li>
-		<small>
-			Los env&iacute;os duran de 15 a 30 d&iacute;as y por ahora solo podemos
-			enviar a La Habana (podemos enviar a casa de su familia o amigos). Pronto
-			agregaremos m&aacute;s provincias.
-		</small>
-	</li>
-	<li>
-		<small>
-			Si no tiene suficientes cr&eacute;ditos, existen
-			{link href="WEB credito.apretaste.com" caption="v&iacute;as de obtener m&aacute;s cr&eacute;ditos"}.
-			Cont&aacute;ctenos para comprar cr&eacute;ditos usando PayPal o una Tarjeta de Cr&eacute;dito.
-		</small>
-	</li>
+	<li>Una vez que compre, le llegar&aacute; un email preguntando su tel&eacute;fono y direcci&oacute;n.</li>
+	<li>Los env&iacute;os duran de 15 a 30 d&iacute;as. Por ahora no podemos enviar a Isla de la Juventud.</li>
 </ul>
+</small>
