@@ -144,11 +144,12 @@ class Tienda extends Service
 	{
 		// Insert the order
 		$connection = new Connection();
-		$connection->query("INSERT INTO _tienda_orders (id, product, email, inserted_date)
-				SELECT id, inventory_code, sender, transfer_time
-				FROM transfer INNER JOIN inventory on transfer.inventory_code = inventory.code
-				WHERE inventory.service = 'TIENDA' AND transfer.transfered = '1'
-				AND NOT EXISTS (SELECT * FROM _tienda_orders WHERE _tienda_orders.id = transfer.id);");
+		$connection->query("
+			INSERT INTO _tienda_orders (id, product, email, inserted_date)
+			SELECT id, inventory_code, sender, transfer_time
+			FROM transfer INNER JOIN inventory on transfer.inventory_code = inventory.code
+			WHERE inventory.service = 'TIENDA' AND transfer.transfered = '1'
+			AND NOT EXISTS (SELECT * FROM _tienda_orders WHERE _tienda_orders.id = transfer.id)");
 
 		// Send email to user
 		$response = new Response();
@@ -158,9 +159,7 @@ class Tienda extends Service
 
 		$service = new Service();
 		$service->serviceName = 'tienda';
-
-		$render = new Render();
-		$html = $render->renderHTML($service, $response);
+		$html = Render::renderHTML($service, $response);
 
 		$email = new Email();
 		$subject = "Se necesitan datos para enviar el articulo comprado a su destino";
