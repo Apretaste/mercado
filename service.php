@@ -151,6 +151,8 @@ class Tienda extends Service
 			WHERE inventory.service = 'TIENDA' AND transfer.transfered = '1'
 			AND NOT EXISTS (SELECT * FROM _tienda_orders WHERE _tienda_orders.id = transfer.id)");
 
+		$subject = "Se necesitan datos para enviar el articulo comprado a su destino";
+		
 		// Send email to user
 		$response = new Response();
 		$response->setResponseSubject($subject);
@@ -162,7 +164,6 @@ class Tienda extends Service
 		$html = Render::renderHTML($service, $response);
 
 		$email = new Email();
-		$subject = "Se necesitan datos para enviar el articulo comprado a su destino";
 		$email->sendEmail($payment->buyer, $subject, $html);
 	}
 }
