@@ -152,11 +152,11 @@ class Tienda extends Service
 			AND NOT EXISTS (SELECT * FROM _tienda_orders WHERE _tienda_orders.id = transfer.id)");
 
 		$subject = "Se necesitan datos para enviar el articulo comprado a su destino";
-		
+
 		// Send email to user
 		$response = new Response();
 		$response->setResponseSubject($subject);
-		$response->internal = true;
+		$response->internal = false;
 		$response->createFromTemplate('request_destination.tpl', array('payment' => $payment));
 
 		$service = new Service();
