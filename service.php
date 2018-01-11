@@ -35,7 +35,6 @@ class Tienda extends Service
 				if(file_exists($file))
 				{
 					copy($file, $tempFile);
-					$this->utils->optimizeImage($tempFile, 100);
 					$product->image = true;
 					$images[] = $tempFile;
 				}
@@ -84,27 +83,28 @@ class Tienda extends Service
 		if (is_array($product))
 		{
 			$product = $product[0];
-			$content = array(
+
+			// set image or not image
+			$images = [];
+			$product->image = false;
+			$imgpath = "$wwwroot/public/products/{$product->code}.jpg";
+			if (file_exists($imgpath))
+			{
+				$images[] = $imgpath;
+				$product->image = true;
+			}
+
+			// create content array
+			$content = [
 				'product' => $product,
 				'wwwroot' => $wwwroot,
 				'current_user' => $current_user,
 				'future_credit' => $current_user->credit - $product->credits
-			);
-
-			$imgpath = "$wwwroot/public/products/{$product->code}.jpg";
-			$product->image = false;
-
-			if (file_exists($imgpath))
-			{
-				$product->image = true;
-				copy("$wwwroot/public/products/{$product->code}.jpg", "$wwwroot/temp/{$product->code}.jpg");
-				$imgpath = "$wwwroot/temp/{$product->code}.jpg";
-				$this->utils->optimizeImage($imgpath, 300, "", 85, 'jpg');
-			}
+			];
 
 			$product->category = $this->translate($product->category);
 			$response->setResponseSubject("Tienda: {$product->name}");
-			$response->createFromTemplate('product.tpl', $content, array($imgpath));
+			$response->createFromTemplate('product.tpl', $content, $images);
 			return $response;
 		}
 
