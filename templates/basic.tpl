@@ -1,6 +1,6 @@
 <h1>Productos en la tienda</h1>
 
-<p align="justify"><b>Su cr&eacute;dito es §{$current_user->credit|string_format:"%.2f"}.</b> A continuaci&oacute;n una lista de los productos que puede comprar con su cr&eacute;dito. El precio incluye el env&iacute;o hasta su casa. Si necesita, vea {link href="WEB credito.apretaste.com" caption="formas de conseguir m&aacute;s credito"}.</p>
+<p align="justify"><b>Su cr&eacute;dito es §{$current_user->credit|string_format:"%.2f"}.</b> A continuaci&oacute;n una lista de los productos disponibles en la tienda. El precio incluye el env&iacute;o hasta su casa. Si necesita, vea {link href="WEB credito.apretaste.com" caption="formas de conseguir m&aacute;s credito"}.</p>
 
 {foreach from=$products item=item name=products}
 <table width="100%" bgcolor="{cycle values="#f2f2f2,white"}">
