@@ -150,8 +150,9 @@ class Tienda extends Service
 			FROM transfer INNER JOIN inventory on transfer.inventory_code = inventory.code
 			WHERE inventory.service = 'TIENDA' AND transfer.transfered = '1'
 			AND NOT EXISTS (SELECT * FROM _tienda_orders WHERE _tienda_orders.id = transfer.id)");
-
-		$subject = "Se necesitan datos para enviar el articulo comprado a su destino";
+		
+		return new Response();
+		/*$subject = "Se necesitan datos para enviar el articulo comprado a su destino";
 
 		// Send email to user
 		$response = new Response();
@@ -164,6 +165,6 @@ class Tienda extends Service
 		$html = Render::renderHTML($service, $response);
 
 		$email = new Email();
-		$email->sendEmail($payment->buyer, $subject, $html);
+		$email->sendEmail($payment->buyer, $subject, $html);*/
 	}
 }
